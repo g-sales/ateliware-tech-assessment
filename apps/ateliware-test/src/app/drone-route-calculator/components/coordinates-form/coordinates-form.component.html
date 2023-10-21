@@ -1,0 +1,42 @@
+<form class="flex flex-col max-w-sm" (submit)="onFormSubmit()" [formGroup]="formGroup">
+  <h1>Input the coordinates:</h1>
+
+  <p>
+    <mat-form-field class="w-full">
+      <mat-label>Drone Start</mat-label>
+      <input matInput [formControl]="formGroup.controls.droneStart" uppercaseInput />
+      <ng-container *ngTemplateOutlet="errors; context: { control: formGroup.controls.droneStart }"></ng-container>
+    </mat-form-field>
+  </p>
+
+  <p>
+    <mat-form-field class="w-full">
+      <mat-label>Object Pick-up</mat-label>
+      <input matInput [formControl]="formGroup.controls.objectPickup" uppercaseInput />
+      <ng-container *ngTemplateOutlet="errors; context: { control: formGroup.controls.objectPickup }"></ng-container>
+    </mat-form-field>
+  </p>
+
+  <p>
+    <mat-form-field class="w-full">
+      <mat-label>Delivery Destination</mat-label>
+      <input matInput [formControl]="formGroup.controls.deliveryDestination" uppercaseInput />
+      <ng-container
+        *ngTemplateOutlet="errors; context: { control: formGroup.controls.deliveryDestination }"
+      ></ng-container>
+    </mat-form-field>
+  </p>
+
+  <button mat-raised-button color="primary" [disabled]="formGroup.invalid">Submit</button>
+</form>
+
+<ng-template #errors let-control="control">
+  <ng-container *ngFor="let error of control.errors | keyvalue">
+    <mat-error *ngIf="error.value && control.touched" [ngSwitch]="error.key">
+      <span *ngSwitchCase="'required'">This field is required</span>
+      <span *ngSwitchCase="'maxlength'">The point must have {{ numberOfCharactersInPoint }} characters</span>
+      <span *ngSwitchCase="'minlength'">The point must have {{ numberOfCharactersInPoint }} characters</span>
+      <span *ngSwitchCase="'invalidPoint'">This is not a valid point</span>
+    </mat-error>
+  </ng-container>
+</ng-template>
