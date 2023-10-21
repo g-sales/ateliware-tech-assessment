@@ -8,25 +8,15 @@
   "targets": {
     "build": {
       "executor": "@angular-devkit/build-angular:browser",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/ateliware-test",
         "index": "apps/ateliware-test/src/index.html",
         "main": "apps/ateliware-test/src/main.ts",
-        "polyfills": [
-          "zone.js"
-        ],
+        "polyfills": ["zone.js"],
         "tsConfig": "apps/ateliware-test/tsconfig.app.json",
-        "assets": [
-          "apps/ateliware-test/src/favicon.ico",
-          "apps/ateliware-test/src/assets"
-        ],
-        "styles": [
-          "@angular/material/prebuilt-themes/deeppurple-amber.css",
-          "apps/ateliware-test/src/styles.scss"
-        ],
+        "assets": ["apps/ateliware-test/src/favicon.ico", "apps/ateliware-test/src/assets"],
+        "styles": ["@angular/material/prebuilt-themes/deeppurple-amber.css", "apps/ateliware-test/src/styles.scss"],
         "scripts": []
       },
       "configurations": {
@@ -76,21 +66,14 @@
     },
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": [
-        "{options.outputFile}"
-      ],
+      "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": [
-          "apps/ateliware-test/**/*.ts",
-          "apps/ateliware-test/**/*.html"
-        ]
+        "lintFilePatterns": ["apps/ateliware-test/**/*.ts", "apps/ateliware-test/**/*.html"]
       }
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": [
-        "{workspaceRoot}/coverage/{projectRoot}"
-      ],
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
         "jestConfig": "apps/ateliware-test/jest.config.ts",
         "passWithNoTests": true
