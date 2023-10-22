@@ -1,0 +1,20 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>
+      <div class="flex justify-center items-center">
+        <span> Route {{ routeResult.coordinates.droneStart }} </span>
+        <mat-icon fontIcon="arrow_forward"></mat-icon>
+        <span>{{ routeResult.coordinates.objectPickup }} </span>
+        <mat-icon fontIcon="arrow_forward"></mat-icon>
+        <span>{{ routeResult.coordinates.deliveryDestination }} </span>
+      </div>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <span> Full route: </span>
+    <div>
+      <span *ngFor="let coord of routeResult.fullPath; let isLast = last">{{ coord }} {{ isLast ? '' : ' - ' }}</span>
+    </div>
+    <span class="pt-[10px]"> Time to complete this route: {{ routeResult.totalTime }}s </span>
+  </mat-card-content>
+</mat-card>

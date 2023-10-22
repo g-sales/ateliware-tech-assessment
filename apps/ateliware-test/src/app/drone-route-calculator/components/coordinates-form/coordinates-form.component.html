@@ -33,11 +33,7 @@
   </div>
 
   <div class="flex flex-col pt-[20px]" *ngIf="!calculating && latestResult">
-    <h3>The delivery route will be:</h3>
-    <p>
-      <span *ngFor="let coord of latestResult.fullPath; let isLast = last">{{ coord }} {{ isLast ? '' : ' - ' }}</span>
-    </p>
-    <h3>This delivery will take {{ latestResult.totalTime }} seconds</h3>
+    <route-result [routeResult]="latestResult"></route-result>
   </div>
 </form>
 

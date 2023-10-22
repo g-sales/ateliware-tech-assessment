@@ -1,12 +1,7 @@
 import { Injectable } from '@angular/core'
 import { RoutingTimingsGateway } from '../gateways/routing-timings.gateway'
-import { Coordinates, Path, findFastestRoute } from '@ateliware/shared'
+import { Coordinates, RouteResult, buildRouteResult, findFastestRoute } from '@ateliware/shared'
 import { firstValueFrom } from 'rxjs'
-
-export interface CalculationResult {
-  pathToObject: Path
-  pathToDelivery: Path
-}
 
 @Injectable({
   providedIn: 'root',
@@ -14,11 +9,11 @@ export interface CalculationResult {
 export class RouteCalculatorService {
   constructor(private gateway: RoutingTimingsGateway) {}
 
-  async calculateRoute(coordinates: Coordinates): Promise<CalculationResult> {
+  async calculateRoute(coordinates: Coordinates): Promise<RouteResult> {
     const graph = await firstValueFrom(this.gateway.getBoardGraph$())
     const pathToObject = findFastestRoute(coordinates.droneStart, coordinates.objectPickup, graph)
     const pathToDelivery = findFastestRoute(coordinates.objectPickup, coordinates.deliveryDestination, graph)
 
-    return { pathToObject, pathToDelivery }
+    return buildRouteResult(coordinates, pathToObject, pathToDelivery)
   }
 }

@@ -4,11 +4,12 @@ import { MatFormFieldModule } from '@angular/material/form-field'
 import { MatInputModule } from '@angular/material/input'
 import { MatButtonModule } from '@angular/material/button'
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms'
-import { Coordinates } from '@ateliware/shared'
+import { Coordinates, RouteResult } from '@ateliware/shared'
 import { UppercaseInputDirective } from '../../directives/uppercase-input.directive'
 import { CoordinatesContext } from '../../contexts/coordinates.context'
 import { RouteCalculatorService } from '../../services/route-calculator.service'
 import { MatProgressBarModule } from '@angular/material/progress-bar'
+import { RouteResultComponent } from '../route-result/route-result.component'
 
 type CoordinatesFormGroup = {
   [key in keyof Coordinates]: FormControl<Coordinates[key]>
@@ -23,11 +24,6 @@ const coordinateInputValidators = [
   // pointValidator,
 ]
 
-interface CalculationViewItem {
-  fullPath: string[]
-  totalTime: string
-}
-
 @Component({
   selector: 'coordinates-form',
   standalone: true,
@@ -40,6 +36,7 @@ interface CalculationViewItem {
     ReactiveFormsModule,
     UppercaseInputDirective,
     MatProgressBarModule,
+    RouteResultComponent,
   ],
   templateUrl: './coordinates-form.component.html',
 })
@@ -50,7 +47,7 @@ export class CoordinatesFormComponent {
 
   calculating = false
 
-  latestResult?: CalculationViewItem
+  latestResult?: RouteResult
 
   formGroup = new FormGroup<CoordinatesFormGroup>({
     droneStart: new FormControl<string>('', {
@@ -75,13 +72,8 @@ export class CoordinatesFormComponent {
       const coordinates = this.formGroup.getRawValue()
 
       this.context.sendNewCoordinates(coordinates)
-      const result = await this.routeCalculator.calculateRoute(coordinates)
+      this.latestResult = await this.routeCalculator.calculateRoute(coordinates)
       this.calculating = false
-
-      this.latestResult = {
-        fullPath: [...result.pathToObject.coords, ...result.pathToDelivery.coords.slice(1)],
-        totalTime: (result.pathToDelivery.totalTime + result.pathToObject.totalTime).toFixed(2),
-      }
     }
   }
 }
