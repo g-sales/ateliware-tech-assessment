@@ -15,7 +15,7 @@ describe('ContextService', () => {
   })
 
   it('should notify listeners when a new coordinate is sent', () => {
-    const listener = jasmine.createSpy('listener')
+    const listener = jest.fn()
     service.coordinates$.subscribe(listener)
 
     service.sendNewCoordinates({

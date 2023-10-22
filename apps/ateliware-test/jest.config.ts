@@ -1,4 +1,5 @@
 /* eslint-disable */
+
 export default {
   displayName: 'ateliware-test',
   preset: '../../jest.preset.js',

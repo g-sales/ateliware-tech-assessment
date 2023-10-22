@@ -27,11 +27,12 @@
     </mat-form-field>
   </p>
 
-  <button mat-raised-button color="primary" [disabled]="formGroup.invalid || calculating">Submit</button>
+  <div class="flex flex-col">
+    <button mat-raised-button color="primary" [disabled]="formGroup.invalid || calculating">Submit</button>
+    <mat-progress-bar mode="indeterminate" class="pt-2" *ngIf="calculating"></mat-progress-bar>
+  </div>
 
-  <mat-progress-bar mode="indeterminate" *ngIf="calculating"></mat-progress-bar>
-
-  <div class="flex flex-col pt-3" *ngIf="!calculating && latestResult">
+  <div class="flex flex-col pt-[20px]" *ngIf="!calculating && latestResult">
     <h3>The delivery route will be:</h3>
     <p>
       <span *ngFor="let coord of latestResult.fullPath; let isLast = last">{{ coord }} {{ isLast ? '' : ' - ' }}</span>

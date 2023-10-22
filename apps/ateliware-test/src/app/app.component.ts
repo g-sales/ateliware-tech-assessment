@@ -8,6 +8,4 @@ import { RouterModule } from '@angular/router'
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
-  title = 'ateliware-test'
-}
+export class AppComponent {}

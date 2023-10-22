@@ -16,8 +16,8 @@ export class RouteCalculatorService {
 
   async calculateRoute(coordinates: Coordinates): Promise<CalculationResult> {
     const graph = await firstValueFrom(this.gateway.getBoardGraph$())
-    const pathToObject = findFastestRoute(coordinates.droneStart, coordinates.objectPickup, 8, graph)
-    const pathToDelivery = findFastestRoute(coordinates.objectPickup, coordinates.deliveryDestination, 8, graph)
+    const pathToObject = findFastestRoute(coordinates.droneStart, coordinates.objectPickup, graph)
+    const pathToDelivery = findFastestRoute(coordinates.objectPickup, coordinates.deliveryDestination, graph)
 
     return { pathToObject, pathToDelivery }
   }

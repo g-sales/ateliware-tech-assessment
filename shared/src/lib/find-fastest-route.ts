@@ -1,7 +1,5 @@
 import { BoardGraph } from './board-graph'
 
-const possibleMovements2 = [goUp, goDown, goRight, goLeft]
-
 export type Path = {
   totalTime: number
   coords: string[]
@@ -19,8 +17,19 @@ function addCoordToPath(path: Path, graph: BoardGraph, newCoord: string) {
 
 const StartingLetterCharCode = 'A'.charCodeAt(0)
 
-export function findFastestRoute(start: string, end: string, boardSize: number, graph: BoardGraph): Path {
+const possibleMovements = [goUp, goDown, goRight, goLeft]
+
+export function findFastestRoute(start: string, end: string, graph: BoardGraph): Path {
+  const boardSize = Math.sqrt(Object.keys(graph).length)
   let fastestPath: Path
+
+  if (!isValid(start)) {
+    throw new Error(`Starting cell ${start} is not valid for board of size ${boardSize}`)
+  }
+
+  if (!isValid(end)) {
+    throw new Error(`Ending cell ${start} is not valid for board of size ${boardSize}`)
+  }
 
   function isValid(coord: string): boolean {
     const [letter, number] = coord.split('')
@@ -30,15 +39,16 @@ export function findFastestRoute(start: string, end: string, boardSize: number, 
   }
 
   function dfs(currentPoint: string, currentPath: Path): void {
+    if (currentPoint === end) {
+      fastestPath = currentPath
+      return
+    }
+
     if (fastestPath && currentPath.totalTime > fastestPath.totalTime) {
       return
     }
 
-    if (currentPoint === end) {
-      fastestPath = currentPath
-    }
-
-    for (const movementFn of possibleMovements2) {
+    for (const movementFn of possibleMovements) {
       const nextPoint = movementFn(currentPoint)
 
       if (

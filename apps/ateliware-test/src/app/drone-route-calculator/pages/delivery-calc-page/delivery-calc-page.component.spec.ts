@@ -1,18 +1,14 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing'
-
 import { DeliveryCalcPageComponent } from './delivery-calc-page.component'
-import { provideAnimations } from '@angular/platform-browser/animations'
+import { MockBuilder, MockRender, MockedComponentFixture } from 'ng-mocks'
 
 describe('DeliveryCalcPageComponent', () => {
   let component: DeliveryCalcPageComponent
-  let fixture: ComponentFixture<DeliveryCalcPageComponent>
+  let fixture: MockedComponentFixture<DeliveryCalcPageComponent>
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [DeliveryCalcPageComponent],
-      providers: [provideAnimations()],
-    })
-    fixture = TestBed.createComponent(DeliveryCalcPageComponent)
+  beforeEach(async () => {
+    await MockBuilder(DeliveryCalcPageComponent)
+    fixture = MockRender('<delivery-calc-page></delivery-calc-page>')
+
     component = fixture.componentInstance
     fixture.detectChanges()
   })
