@@ -7,6 +7,8 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidationErr
 import { Coordinates } from '@ateliware/shared'
 import { UppercaseInputDirective } from '../../directives/uppercase-input.directive'
 import { CoordinatesContext } from '../../contexts/coordinates.context'
+import { RouteCalculatorService } from '../../services/route-calculator.service'
+import { MatProgressBarModule } from '@angular/material/progress-bar'
 
 type CoordinatesFormGroup = {
   [key in keyof Coordinates]: FormControl<Coordinates[key]>
@@ -21,6 +23,11 @@ const coordinateInputValidators = [
   // pointValidator,
 ]
 
+interface CalculationViewItem {
+  fullPath: string[]
+  totalTime: string
+}
+
 @Component({
   selector: 'coordinates-form',
   standalone: true,
@@ -32,13 +39,18 @@ const coordinateInputValidators = [
     FormsModule,
     ReactiveFormsModule,
     UppercaseInputDirective,
+    MatProgressBarModule,
   ],
   templateUrl: './coordinates-form.component.html',
 })
 export class CoordinatesFormComponent {
-  constructor(private context: CoordinatesContext) {}
+  constructor(private context: CoordinatesContext, private routeCalculator: RouteCalculatorService) {}
 
   numberOfCharactersInPoint = numberOfCharactersInPoint
+
+  calculating = false
+
+  latestResult?: CalculationViewItem
 
   formGroup = new FormGroup<CoordinatesFormGroup>({
     droneStart: new FormControl<string>('', {
@@ -55,9 +67,21 @@ export class CoordinatesFormComponent {
     }),
   })
 
-  onFormSubmit() {
-    if (this.formGroup.valid) {
-      this.context.sendNewCoordinates(this.formGroup.getRawValue())
+  // TODO: validate that middle is different from both start and end
+
+  async onFormSubmit() {
+    if (this.formGroup.valid && !this.calculating) {
+      this.calculating = true
+      const coordinates = this.formGroup.getRawValue()
+
+      this.context.sendNewCoordinates(coordinates)
+      const result = await this.routeCalculator.calculateRoute(coordinates)
+      this.calculating = false
+
+      this.latestResult = {
+        fullPath: [...result.pathToObject.coords, ...result.pathToDelivery.coords.slice(1)],
+        totalTime: (result.pathToDelivery.totalTime + result.pathToObject.totalTime).toFixed(2),
+      }
     }
   }
 }

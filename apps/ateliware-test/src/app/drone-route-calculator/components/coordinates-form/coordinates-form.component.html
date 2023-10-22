@@ -27,7 +27,17 @@
     </mat-form-field>
   </p>
 
-  <button mat-raised-button color="primary" [disabled]="formGroup.invalid">Submit</button>
+  <button mat-raised-button color="primary" [disabled]="formGroup.invalid || calculating">Submit</button>
+
+  <mat-progress-bar mode="indeterminate" *ngIf="calculating"></mat-progress-bar>
+
+  <div class="flex flex-col pt-3" *ngIf="!calculating && latestResult">
+    <h3>The delivery route will be:</h3>
+    <p>
+      <span *ngFor="let coord of latestResult.fullPath; let isLast = last">{{ coord }} {{ isLast ? '' : ' - ' }}</span>
+    </p>
+    <h3>This delivery will take {{ latestResult.totalTime }} seconds</h3>
+  </div>
 </form>
 
 <ng-template #errors let-control="control">
