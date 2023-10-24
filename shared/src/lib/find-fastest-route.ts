@@ -1,3 +1,4 @@
+import { StartingLetterCharCode } from './board-config'
 import { BoardGraph } from './board-graph'
 
 export type Route = {
@@ -14,8 +15,6 @@ function addCoordToPath(path: Route, graph: BoardGraph, newCoord: string) {
     totalTime: path.totalTime + timeBetweenCoords,
   }
 }
-
-const StartingLetterCharCode = 'A'.charCodeAt(0)
 
 const possibleMovements = [goUp, goRight, goDown, goLeft]
 

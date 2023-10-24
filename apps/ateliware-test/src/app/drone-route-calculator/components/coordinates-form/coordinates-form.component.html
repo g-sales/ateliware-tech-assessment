@@ -44,6 +44,7 @@
       <span *ngSwitchCase="'maxlength'">The point must have {{ numberOfCharactersInPoint }} characters</span>
       <span *ngSwitchCase="'minlength'">The point must have {{ numberOfCharactersInPoint }} characters</span>
       <span *ngSwitchCase="'invalidPoint'">This is not a valid point</span>
+      <span *ngSwitchCase="'samePoint'">This field cannot have the same value as another</span>
     </mat-error>
   </ng-container>
 </ng-template>
