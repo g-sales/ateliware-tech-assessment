@@ -6,7 +6,7 @@ import { MatButtonModule } from '@angular/material/button'
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms'
 import { Coordinates, RouteResult } from '@ateliware/shared'
 import { UppercaseInputDirective } from '../../directives/uppercase-input.directive'
-import { CoordinatesContext } from '../../contexts/coordinates.context'
+import { RouteResultsContext } from '../../contexts/route-result.context'
 import { RouteCalculatorService } from '../../services/route-calculator.service'
 import { MatProgressBarModule } from '@angular/material/progress-bar'
 import { RouteResultComponent } from '../route-result/route-result.component'
@@ -41,7 +41,7 @@ const coordinateInputValidators = [
   templateUrl: './coordinates-form.component.html',
 })
 export class CoordinatesFormComponent {
-  constructor(private context: CoordinatesContext, private routeCalculator: RouteCalculatorService) {}
+  constructor(private context: RouteResultsContext, private routeCalculator: RouteCalculatorService) {}
 
   numberOfCharactersInPoint = numberOfCharactersInPoint
 
@@ -71,8 +71,8 @@ export class CoordinatesFormComponent {
       this.calculating = true
       const coordinates = this.formGroup.getRawValue()
 
-      this.context.sendNewCoordinates(coordinates)
       this.latestResult = await this.routeCalculator.calculateRoute(coordinates)
+      this.context.storeResult(this.latestResult)
       this.calculating = false
     }
   }

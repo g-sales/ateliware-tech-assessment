@@ -112,12 +112,6 @@ describe('findFastestRoute', () => {
     expect(result.totalTime).toBe(11)
   })
 
-  it('should find the fastest route between B6 and A1', () => {
-    const result = findFastestRoute('A1', 'B6', graphJson)
-
-    console.log(result)
-  })
-
   it('should throw an error if an invalid start point is provided', () => {
     expect(() => findFastestRoute('A5', 'A1', graph)).toThrow()
   })

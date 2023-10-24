@@ -1,26 +1,27 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing'
 import { CoordinatesFormComponent } from './coordinates-form.component'
 import { provideAnimations } from '@angular/platform-browser/animations'
-import { CoordinatesContext } from '../../contexts/coordinates.context'
+import { RouteResultsContext } from '../../contexts/route-result.context'
 import { MockProviders } from 'ng-mocks'
 import { RouteCalculatorService } from '../../services/route-calculator.service'
+import { RouteResult } from '@ateliware/shared'
 
 describe('CoordinatesFormComponent', () => {
   let component: CoordinatesFormComponent
   let fixture: ComponentFixture<CoordinatesFormComponent>
-  let context: CoordinatesContext
+  let context: RouteResultsContext
   let calculateService: RouteCalculatorService
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [CoordinatesFormComponent],
-      providers: [provideAnimations(), ...MockProviders(RouteCalculatorService, CoordinatesContext)],
+      providers: [provideAnimations(), ...MockProviders(RouteCalculatorService, RouteResultsContext)],
     })
     fixture = TestBed.createComponent(CoordinatesFormComponent)
     component = fixture.componentInstance
     fixture.detectChanges()
 
-    context = TestBed.inject(CoordinatesContext)
+    context = TestBed.inject(RouteResultsContext)
     calculateService = TestBed.inject(RouteCalculatorService)
   })
 
@@ -30,17 +31,16 @@ describe('CoordinatesFormComponent', () => {
 
   describe('onFormSubmit', () => {
     beforeEach(() => {
-      jest.spyOn(context, 'sendNewCoordinates')
-      jest.spyOn(calculateService, 'calculateRoute')
+      jest.spyOn(context, 'storeResult')
+      jest.spyOn(calculateService, 'calculateRoute').mockResolvedValue({} as RouteResult)
     })
 
-    it('should calculate route if form is valid and is not calculating', () => {
+    it('should calculate route if form is valid and is not calculating', async () => {
       jest.spyOn(component.formGroup, 'valid', 'get').mockReturnValue(true)
 
       component.calculating = false
-      component.onFormSubmit()
+      await component.onFormSubmit()
 
-      expect(context.sendNewCoordinates).toHaveBeenCalled()
       expect(calculateService.calculateRoute).toHaveBeenCalled()
     })
 
@@ -49,17 +49,15 @@ describe('CoordinatesFormComponent', () => {
 
       await component.onFormSubmit()
 
-      expect(context.sendNewCoordinates).not.toHaveBeenCalled()
       expect(calculateService.calculateRoute).not.toHaveBeenCalled()
     })
 
     it('should not calculate if form is valid but its already calculating', async () => {
-      jest.spyOn(component.formGroup, 'valid', 'get').mockReturnValue(false)
+      jest.spyOn(component.formGroup, 'valid', 'get').mockReturnValue(true)
 
       component.calculating = true
       await component.onFormSubmit()
 
-      expect(context.sendNewCoordinates).not.toHaveBeenCalled()
       expect(calculateService.calculateRoute).not.toHaveBeenCalled()
     })
   })

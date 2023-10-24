@@ -12,6 +12,16 @@ describe('RouteResultComponent', () => {
 
     fixture = TestBed.createComponent(RouteResultComponent)
     component = fixture.componentInstance
+
+    component.routeResult = {
+      coordinates: {
+        droneStart: 'A1',
+        objectPickup: 'B1',
+        deliveryDestination: 'C1',
+      },
+      fullPath: ['A1', 'B1', 'C1'],
+      totalTime: '3.2',
+    }
     fixture.detectChanges()
   })
 

@@ -33,13 +33,11 @@ export function findFastestRoute(start: string, end: string, graph: BoardGraph):
 
   function dfs(currentPoint: string, currentPath: Route): void {
     if (currentPoint === end) {
-      console.log(`New fastest route found`)
       fastestRoute = currentPath
       return
     }
 
-    if (fastestRoute && currentPath.totalTime > fastestRoute.totalTime) {
-      console.count(`Route not faster than one already found. Aborting`)
+    if (currentPath.totalTime > fastestRoute.totalTime) {
       return
     }
 

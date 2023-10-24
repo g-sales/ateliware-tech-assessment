@@ -39,8 +39,9 @@ describe('RouteCalculatorService', () => {
       })
 
       expect(result).toBeDefined()
-      expect(result.pathToDelivery).toBeDefined()
-      expect(result.pathToObject).toBeDefined()
+      expect(result.coordinates).toBeDefined()
+      expect(result.fullPath).toBeDefined()
+      expect(result.totalTime).toBeDefined()
       expect(getGraphSpy).toBeCalled()
       expect(algorithmSpy).toBeCalledTimes(2)
     })
